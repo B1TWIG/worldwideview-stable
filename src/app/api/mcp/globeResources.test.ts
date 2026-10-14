@@ -303,9 +303,15 @@ describe("globe://layers handler (RSRC-04)", () => {
             { sessionId: "sess-oldest", lastSeen: 1736900000000 },
             { sessionId: "sess-newest", lastSeen: 1737000000000 },
         ];
-        mockReadSessions.mockResolvedValue([...sessions]);
-        mockReadState.mockImplementation(async (_userId: string, sessionId: string) =>
-            sessionId === "sess-newest" ? newest : sessionId === "sess-oldest" ? oldest : null,
+        // Hand the handler the very array this mock returned (no defensive
+        // pre-copy) and freeze it, so an in-place reorder either throws or
+        // leaves a mutation signature this test can see. Distinct lastSeen
+        // scores make the original order genuinely distinguishable.
+        const handedToHandler = Object.freeze(sessions);
+        mockReadSessions.mockResolvedValue(handedToHandler as (typeof sessions));
+        mockReadState.mockImplementation(
+            async (_userId: string, sessionId: string) =>
+                ({ "sess-newest": newest, "sess-oldest": oldest })[sessionId] ?? null,
         );
 
         const server = makeFakeServer();
@@ -333,6 +339,19 @@ describe("globe://layers handler (RSRC-04)", () => {
 
         expect(mockReadState).toHaveBeenCalledWith("u1", "sess-newest");
         expect(mockReadState).not.toHaveBeenCalledWith("u1", "sess-oldest");
+
+        // Immutability control: the exact array handed to the handler still
+        // holds the delivered oldest-first order after a newest-first
+        // selection. A stable in-place sort of equal scores cannot falsify
+        // this; distinct scores can, so this assertion fails on an in-place
+        // descending sort (verified against that mutant, not by inspection).
+        expect(sessions.map((session) => session.sessionId)).toEqual(["sess-oldest", "sess-newest"]);
+        expect(sessions[0].lastSeen).toBe(1736900000000);
+        expect(sessions[1].lastSeen).toBe(1737000000000);
+        expect(handedToHandler).toBe(sessions);
+        // The newest snapshot really was the one read, so the order assertion
+        // above is a statement about immutability rather than about inaction.
+        expect(mockReadSessions).toHaveBeenCalledTimes(1);
     });
 
     it("preserves the caller's session array and keeps original order on lastSeen ties", async () => {
