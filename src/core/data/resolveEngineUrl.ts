@@ -21,11 +21,14 @@ export const CLOUD_ENGINE_BASE_URL = CLOUD_ENGINE_URL.replace(/^wss:/, "https:")
  * appending `/stream` a second time.
  */
 export function toWsStreamUrl(url: string): string {
-  let normalized = url
+  const normalized = url
     .replace(/^https:\/\//, "wss://")
-    .replace(/^http:\/\//, "ws://");
+    .replace(/^http:\/\//, "ws://")
+    // Strip trailing slashes BEFORE the suffix check: "…/stream/" must be
+    // recognized as already carrying the stream path, not re-appended.
+    .replace(/\/+$/, "");
   if (!normalized.endsWith("/stream")) {
-    normalized = `${normalized.replace(/\/+$/, "")}/stream`;
+    return `${normalized}/stream`;
   }
   return normalized;
 }
