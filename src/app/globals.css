@@ -1,6 +1,4 @@
-/* Agentic Claude workflow active - April 2026 */
-/* Agentic Claude workflow active - April 2026 */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 @import '../styles/theme-tokens.css';
 
 
@@ -49,8 +47,15 @@ html, body {
   border: var(--glass-border);
   box-shadow: var(--glass-border-inner), var(--glass-shadow);
   border-radius: var(--radius-lg);
-  transition: all var(--duration-fast) var(--ease-smooth);
-  backdrop-filter: blur(24px) !important;
+  /* Transition only what changes on hover; `all` re-evaluates every
+     property (including layout ones) on each state flip. */
+  transition: background-color var(--duration-fast) var(--ease-smooth),
+              border-color var(--duration-fast) var(--ease-smooth),
+              box-shadow var(--duration-fast) var(--ease-smooth);
+  /* `none` by default: a backdrop blur over the WebGL globe forces a
+     full-screen readback every frame. The legacy theme opts back in. */
+  backdrop-filter: var(--glass-backdrop);
+  -webkit-backdrop-filter: var(--glass-backdrop);
 }
 
 /* ─── Page Root (flex row: app + optional ad strip) ───────── */
@@ -166,7 +171,10 @@ html, body {
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
-  transition: all var(--duration-fast) var(--ease-spring);
+  transition: background-color var(--duration-fast) var(--ease-smooth),
+              color var(--duration-fast) var(--ease-smooth),
+              border-color var(--duration-fast) var(--ease-smooth),
+              box-shadow var(--duration-fast) var(--ease-smooth);
   white-space: nowrap;
 }
 
@@ -174,12 +182,10 @@ html, body {
   background: var(--bg-glass-hover);
   color: var(--text-primary);
   border-color: var(--border-medium);
-  transform: translateY(-1px);
-
 }
 
 .btn:active {
-  transform: scale(0.97);
+  background: var(--bg-glass-active);
 }
 
 .btn--active,
@@ -685,7 +691,7 @@ body.sidebar-force-transition .sidebar {
   height: 28px;
   border-radius: var(--radius-sm);
   background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(8px);
+  backdrop-filter: var(--glass-backdrop);
   border: 1px solid rgba(255, 255, 255, 0.15);
   color: rgba(255, 255, 255, 0.7);
   cursor: pointer;
@@ -741,19 +747,13 @@ body.sidebar-force-transition .sidebar {
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #f59e0b;
-  background: rgba(245, 158, 11, 0.12);
-  border: 1px solid rgba(245, 158, 11, 0.3);
-  padding: 2px 7px;
-  border-radius: 4px;
+  color: var(--text-primary);
+  background: var(--accent-blue);
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
   white-space: nowrap;
   flex-shrink: 0;
-  animation: alpha-glow 3s ease-in-out infinite;
-}
-
-@keyframes alpha-glow {
-  0%, 100% { box-shadow: 0 0 4px rgba(245, 158, 11, 0.15); }
-  50% { box-shadow: 0 0 8px rgba(245, 158, 11, 0.3); }
+  /* Static on purpose: the old pulsing glow repainted the header forever. */
 }
 
 /* ─── Responsive ──────────────────────────────────────────── */
@@ -1047,8 +1047,8 @@ body.sidebar-force-transition .sidebar {
   position: fixed;
   z-index: 200;
   background: var(--bg-glass);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
+  backdrop-filter: var(--glass-backdrop);
+  -webkit-backdrop-filter: var(--glass-backdrop);
   border: var(--glass-border);
   border-radius: var(--radius-md);
   box-shadow: var(--glass-border-inner), var(--glass-shadow);
@@ -1168,8 +1168,8 @@ body.sidebar-force-transition .sidebar {
   width: 32px; /* Thinner tabs */
   height: 80px; /* Taller tabs for easier grabbing */
   background: var(--bg-glass);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
+  backdrop-filter: var(--glass-backdrop);
+  -webkit-backdrop-filter: var(--glass-backdrop);
   border: var(--glass-border);
   color: var(--text-muted);
   cursor: pointer;
@@ -1776,8 +1776,8 @@ body.is-resizing-sidebar .sidebar {
   /* Add extra padding top so the content clears the header's overlap */
   padding: 16px var(--space-xl) var(--space-md);
   background: var(--bg-glass);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
+  backdrop-filter: var(--glass-backdrop);
+  -webkit-backdrop-filter: var(--glass-backdrop);
   border: var(--glass-border);
   border-top: none;
   /* Round only bottom to form a continuous shape downwards from the header */
@@ -1877,8 +1877,10 @@ body.is-resizing-sidebar .sidebar {
   border: 1px solid var(--border-subtle);
   color: var(--text-secondary);
   cursor: pointer;
-  transition: all var(--duration-fast) var(--ease-smooth);
-  backdrop-filter: blur(12px);
+  transition: background-color var(--duration-fast) var(--ease-smooth),
+              border-color var(--duration-fast) var(--ease-smooth),
+              color var(--duration-fast) var(--ease-smooth);
+  backdrop-filter: var(--glass-backdrop);
   box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 
@@ -1987,7 +1989,7 @@ body.is-resizing-sidebar .sidebar {
     top: 0; right: 0; bottom: 0; left: 0;
     z-index: -1;
     background: var(--bg-glass);
-    backdrop-filter: blur(var(--glass-blur, 24px));
+    backdrop-filter: var(--glass-backdrop);
     border: var(--glass-border);
     border-bottom: none;
     border-radius: var(--radius-sm) var(--radius-sm) 0 0;

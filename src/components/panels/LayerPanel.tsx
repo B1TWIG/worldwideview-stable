@@ -40,7 +40,6 @@ export function LayerPanel() {
     const leftSidebarOpen = useStore((s) => s.leftSidebarOpen);
     const openMobilePanel = useStore((s) => s.openMobilePanel);
     const layers = useStore((s) => s.layers);
-    const entitiesByPlugin = useStore((s) => s.entitiesByPlugin);
     const highlightLayerId = useStore((s) => s.highlightLayerId);
     const setHighlightLayerId = useStore((s) => s.setHighlightLayerId);
     const setConfigPanelOpen = useStore((s) => s.setConfigPanelOpen);
@@ -223,9 +222,11 @@ export function LayerPanel() {
                   {plugins.map((managed) => {
                                     const isEnabled = layers[managed.plugin.id]?.enabled || false;
                                     const isLoading = layers[managed.plugin.id]?.loading || false;
-                                    const count = (entitiesByPlugin[managed.plugin.id] || []).length;
-                                    const fetchedAt = layers[managed.plugin.id]?.fetchedAt;
                                     const layerState = layers[managed.plugin.id];
+                                    // Rendered count lives on the layer record, so the panel no
+                                    // longer subscribes to every entity array in the store.
+                                    const count = layerState?.renderedCount ?? layerState?.entityCount ?? 0;
+                                    const fetchedAt = layerState?.fetchedAt;
 
                                     return (
                                       <LayerItem
