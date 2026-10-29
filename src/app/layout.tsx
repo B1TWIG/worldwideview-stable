@@ -46,7 +46,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: `
               try {
-                var theme = localStorage.getItem('wwv-theme') || 'dark';
+                var theme = localStorage.getItem('wwv-theme') || 'light';
                 document.documentElement.setAttribute('data-theme', theme);
               } catch (e) {}
             `,

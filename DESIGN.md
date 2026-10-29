@@ -9,7 +9,7 @@ Reference material (not shipped): Palantir Foundry Map documentation screenshots
 The previous glassmorphism treatment survives only as the **Legacy** theme (`[data-theme='legacy']`), which re-enables `backdrop-filter` and large radii through tokens.
 
 ## 2. Color Palette & Roles
-Tokens live in `src/styles/theme-tokens.css`. The default **PLTR Dark** theme uses the Blueprint dark ramp:
+Tokens live in `src/styles/theme-tokens.css`. The default theme is **Foundry Light** (Blueprint light ramp: `#f6f7f9` canvas, white panels, `#1c2127` text, `#2d72d2` intent blue) over the Esri Light Gray Canvas basemap with the star field and atmosphere switched off, so the globe floats on a flat grey field like Foundry's map. **Foundry Dark** uses the Blueprint dark ramp:
 
 * **Black** (`#111418`) - `--bg-primary`: canvas behind the app shell.
 * **Dark Gray 1** (`#1c2127`) - `--bg-glass` / `--bg-secondary`: opaque panel, header and dialog surface.
@@ -19,7 +19,7 @@ Tokens live in `src/styles/theme-tokens.css`. The default **PLTR Dark** theme us
 * **Blue 4** (`#4c90f0`) - `--accent-cyan` (intent primary): active tabs, toggles, scrubber, selected rows. `--glow-cyan` is a 1px intent ring, never a diffuse glow.
 * **Green 4** (`#32a467`), **Orange 4** (`#ec9a3c`), **Red 4** (`#e76a6e`) - success / warning / danger intents.
 
-**PLTR Light** mirrors the Blueprint light ramp: `#f6f7f9` canvas, white panels, `#1c2127` text, `#2d72d2` intent blue.
+The application bar is a docked 48px strip with a coloured app tile flush left (Foundry's square icon); panels float 12px from the edges with 4px corners.
 
 ## 3. Typography Rules
 The system uses a dual-font strategy to balance clean user interfaces with technical precision.

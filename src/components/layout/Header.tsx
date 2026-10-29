@@ -41,9 +41,9 @@ const REGIONS = [
 ];
 
 const THEMES = [
-    { id: "dark", label: "PLTR Dark", icon: Moon },
+    { id: "dark", label: "Foundry Dark", icon: Moon },
     { id: "black", label: "Black", icon: Moon },
-    { id: "light", label: "PLTR Light", icon: Sun },
+    { id: "light", label: "Foundry Light", icon: Sun },
     { id: "legacy", label: "Legacy", icon: Monitor },
     { id: "tactical", label: "Tactical", icon: Crosshair },
 ] as const;
@@ -235,14 +235,15 @@ export function Header() {
       <>
         <header className="header glass-panel">
           <div className="header__brand">
-            <a href={HUB_URL} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", color: "inherit", cursor: "pointer" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <a href={HUB_URL} target="_blank" rel="noopener noreferrer" className="header__brand-link" title={BRAND_TAGLINE}>
+              <span className="header__tile">
                 <Image src="/logo/logo-icon.svg" alt="Logo" width={22} height={22} style={{ objectFit: "contain" }} />
-                <div className="header__logo">{BRAND_WORDMARK}</div>
+              </span>
+              <span className="header__brand-text">
+                <span className="header__logo">{BRAND_WORDMARK}</span>
                 <span className="alpha-badge">{BRAND_STAGE}</span>
                 {isDemoAdmin && <span className="alpha-badge" style={{ background: "var(--accent-orange, #f59e0b)" }}>ADMIN</span>}
-              </div>
-              <div className="header__subtitle">{BRAND_TAGLINE}</div>
+              </span>
             </a>
             <div style={{ marginLeft: "var(--space-xl)" }}>
               <SearchBar />

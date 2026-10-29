@@ -79,22 +79,29 @@ html, body {
 
 .app-shell__globe {
   position: absolute;
-  inset: 0;
+  inset: 48px 0 0 0; /* map sits below the docked app bar */
   z-index: 0;
+  background: var(--bg-primary);
 }
 
 /* ─── Header ──────────────────────────────────────────────── */
+/* Foundry-style application bar: docked full-width, 48px, flat, with the
+   app tile flush left (Foundry's coloured square) and the title beside it. */
 .header {
   position: fixed;
-  top: var(--space-lg);
-  left: var(--space-lg);
-  right: calc(var(--ad-strip-inset, 0px) + var(--space-lg));
+  top: 0;
+  left: 0;
+  right: var(--ad-strip-inset, 0px);
   z-index: 100;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--space-md) var(--space-xl);
-  height: 52px;
+  padding: 0 var(--space-md) 0 0;
+  height: 48px;
+  border: none;
+  border-bottom: 1px solid var(--border-subtle);
+  border-radius: 0;
+  box-shadow: 0 1px 2px rgba(17, 20, 24, 0.1);
   transition: transform var(--duration-normal) var(--ease-smooth);
 }
 
@@ -103,12 +110,44 @@ html, body {
   align-items: center;
   gap: var(--space-md);
   flex-shrink: 0;
+  height: 100%;
+}
+
+.header__brand-link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  height: 100%;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.header__tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 100%;
+  background: var(--accent-blue);
+  border-right: 1px solid var(--border-subtle);
+}
+
+.header__tile img {
+  /* Render the mark in white on the coloured tile */
+  filter: brightness(0) invert(1);
+}
+
+.header__brand-text {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
 }
 
 .header__logo {
-  font-size: 18px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0;
   white-space: nowrap;
   color: var(--text-primary);
 }
@@ -161,15 +200,14 @@ html, body {
   justify-content: center;
   gap: var(--space-sm);
   padding: var(--space-xs) var(--space-md);
-  height: 36px;
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
+  height: 30px;
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-sm);
   background: var(--bg-glass);
-  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.05);
-  color: var(--text-secondary);
+  color: var(--text-primary);
   font-family: var(--font-ui);
-  font-size: 13px;
-  font-weight: 500;
+  font-size: 14px;
+  font-weight: 400;
   cursor: pointer;
   transition: background-color var(--duration-fast) var(--ease-smooth),
               color var(--duration-fast) var(--ease-smooth),
@@ -197,7 +235,7 @@ html, body {
 }
 
 .btn--icon {
-  width: 36px;
+  width: 30px;
   padding: 0;
 }
 
@@ -223,11 +261,11 @@ html, body {
 /* ─── Sidebar ─────────────────────────────────────────────── */
 .sidebar {
   position: fixed;
-  top: 80px; /* Reduced to ~12px gap from header */
+  top: 60px; /* 48px app bar + 12px gutter */
   bottom: var(--sidebar-bottom, 140px); /* Dynamically pushed by BottomPanelManager */
   width: 280px;
   z-index: 50;
-  padding: var(--space-lg);
+  padding: var(--space-md);
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -249,7 +287,7 @@ body.sidebar-force-transition .sidebar {
 }
 
 .sidebar--left {
-  left: var(--space-lg);
+  left: var(--space-md);
 }
 
 .sidebar--left.sidebar--closed {
@@ -259,7 +297,7 @@ body.sidebar-force-transition .sidebar {
 }
 
 .sidebar--right {
-  right: calc(var(--ad-strip-inset, 0px) + var(--space-lg));
+  right: calc(var(--ad-strip-inset, 0px) + var(--space-md));
 }
 
 .sidebar--right.sidebar--closed {
@@ -317,8 +355,8 @@ body.sidebar-force-transition .sidebar {
   align-items: center;
   justify-content: center;
   padding: var(--space-xs) var(--space-sm);
-  font-size: 11px;
-  font-weight: 500;
+  font-size: 13px;
+  font-weight: 400;
   color: var(--text-muted);
   background: transparent;
   border: none;
@@ -336,8 +374,8 @@ body.sidebar-force-transition .sidebar {
 .panel-tab--active,
 .panel-tab--active:hover {
   color: var(--accent-cyan);
-  background: rgba(var(--accent-rgb), 0.1);
-  font-weight: 600;
+  background: rgba(var(--accent-rgb), 0.15);
+  font-weight: 500;
 }
 
 /* ─── Intel Action Buttons ───────────────────────────────── */
